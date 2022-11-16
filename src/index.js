@@ -3,11 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import AuthProvider from './context/AuthProvider';
+// day picker
+import 'react-day-picker/dist/style.css';
+
+// * TanStack Query
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// react hot toast
+import { Toaster } from 'react-hot-toast';
+
+// Create a client
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* Provide the client to your App */}
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <App />
+        <Toaster />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
