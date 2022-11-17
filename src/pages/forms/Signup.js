@@ -6,12 +6,19 @@ import { AuthContext } from '../../context/AuthProvider';
 
 // react hot toast
 import toast from 'react-hot-toast';
+import useToken from '../hooks/useToken';
 
 function Signup() {
   const [error, setError] = useState('');
 
+  const [email, setEmail] = useState('');
+
+  const [token] = useToken(email);
   const navigate = useNavigate();
 
+  if (token) {
+    navigate('/');
+  }
   // use context
   const { signup, profile, googleSignin } = useContext(AuthContext);
 
@@ -35,7 +42,7 @@ function Signup() {
         toast.success('User successfully created...');
         profile(name)
           .then(() => {
-            navigate('/');
+            usersdata(name, email);
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -61,6 +68,25 @@ function Signup() {
         const errorMessage = error.message;
         setError(errorMessage);
       });
+  };
+
+  // save users data
+  const usersdata = (name, email) => {
+    const user = { name, email };
+
+    fetch('http://localhost:5000/users', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setEmail(email);
+      })
+      .catch((error) => console.error(error.message));
   };
 
   return (

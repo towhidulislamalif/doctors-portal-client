@@ -47,7 +47,7 @@ function BookingModal({ selected, treatment, setTreatment, refetch }) {
           refetch();
           toast.success('Booking placed');
         } else {
-          toast.error('Booking placed');
+          toast.error(data.message);
         }
       });
   };

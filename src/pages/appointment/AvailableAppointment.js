@@ -24,11 +24,11 @@ function AvailableAppointment({ selected }) {
 
   // const { data: appointmentoptions = [] } = useQuery({
   //   queryKey: ['appointmentoptions'],
-  //   queryFn: async () => {
-  //     const res = await fetch('http://localhost:5000/appointmentoptions');
-  //     const data = await res.json();
-  //     return data;
-  //   },
+  // queryFn: async () => {
+  //   const res = await fetch('http://localhost:5000/appointmentoptions');
+  //   const data = await res.json();
+  //   return data;
+  // },
   // });
   // useEffect(() => {
   // fetch('http://localhost:5000/appointmentoptions')
