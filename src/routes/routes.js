@@ -9,6 +9,10 @@ import Signup from '../pages/forms/Signup';
 import Homepage from '../pages/homepage/Homepage';
 import Root from '../root/Root';
 import MyAppointment from '../pages/dashboard/MyAppointment';
+import AllUsers from '../pages/dashboard/AllUsers';
+import AdminRoutes from '../pages/protected/AdminRoutes';
+import AddDoctors from '../pages/dashboard/AddDoctors';
+import ManageDoctors from '../pages/dashboard/ManageDoctors';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +54,30 @@ const router = createBrowserRouter([
       {
         path: '/dashboard',
         element: <MyAppointment />,
+      },
+      {
+        path: '/dashboard/allusers',
+        element: (
+          <AdminRoutes>
+            <AllUsers />
+          </AdminRoutes>
+        ),
+      },
+      {
+        path: '/dashboard/add-doctors',
+        element: (
+          <AdminRoutes>
+            <AddDoctors />
+          </AdminRoutes>
+        ),
+      },
+      {
+        path: '/dashboard/manage-doctors',
+        element: (
+          <AdminRoutes>
+            <ManageDoctors />
+          </AdminRoutes>
+        ),
       },
     ],
   },

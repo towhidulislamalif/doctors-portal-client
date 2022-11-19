@@ -7,23 +7,35 @@ import { AuthContext } from '../../context/AuthProvider';
 
 // react hot toast
 import toast from 'react-hot-toast';
+import useToken from '../hooks/useToken';
 
 function Login() {
+  // state
   const [error, setError] = useState('');
+  const [reset, setReset] = useState('');
+  const [email, setEmail] = useState('');
 
   // use context
-  const { signin, googleSignin } = useContext(AuthContext);
+  const { signin, resetPass, googleSignin } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  // navigate
   const location = useLocation();
+  const navigate = useNavigate();
   const from = location.state?.from?.pathname || '/';
 
+  // use token
+  const [token] = useToken(email);
+  if (token) {
+    navigate(from, { replace: true });
+  }
+
+  // react hook form
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
+  // form submit
   const formSubmit = (data) => {
     const email = data.useremail;
     const password = data.password;
@@ -33,9 +45,21 @@ function Login() {
     signin(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('🚀 ~ file: Login.js ~ line 28 ~ .then ~ user', user);
+        // console.log('🚀 ~ file: Login.js ~ line 28 ~ .then ~ user', user);
         toast.success('User successfully login...');
-        navigate(from, { replace: true });
+        setEmail(email);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setError(errorMessage);
+      });
+  };
+
+  //
+  const handleReset = () => {
+    resetPass(reset)
+      .then(() => {
+        toast.success('Password reset email sent!');
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -48,7 +72,7 @@ function Login() {
     googleSignin()
       .then((result) => {
         const user = result.user;
-        console.log('🚀 ~ file: Login.js ~ line 51 ~ .then ~ user', user);
+        // console.log('🚀 ~ file: Login.js ~ line 51 ~ .then ~ user', user);
         toast.success('User successfully login with Google...');
       })
       .catch((error) => {
@@ -79,6 +103,7 @@ function Login() {
               {...register('useremail', {
                 required: 'Please fill out this field.',
               })}
+              onBlur={(event) => setReset(event.target.value)}
               id="useremail"
               placeholder="Email or username"
               className="w-full px-3 py-3 font-medium italic text-sm rounded placeholder:text-sm placeholder:italic border-gray-400 bg-gray-50 text-gray-800 focus:ring-blue-600 focus:border-blue-600 focus:ring-2"
@@ -124,9 +149,9 @@ function Login() {
                   {error}{' '}
                 </p>
               )}
-              <a rel="noopener noreferrer" href="#">
+              <p onClick={handleReset} rel="noopener noreferrer" href="#">
                 Forgot Password?
-              </a>
+              </p>
             </div>
           </div>
           <button className="block font-medium italic uppercase w-full p-3 text-center rounded-sm text-gray-50 bg-muted">
