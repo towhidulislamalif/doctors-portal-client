@@ -24,7 +24,9 @@ function AddDoctors() {
   const { data: specialties, isLoading } = useQuery({
     queryKey: ['specialty'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:5000/specialty');
+      const res = await fetch(
+        'https://doctors-portal-server-nu-one.vercel.app/specialty'
+      );
       const data = await res.json();
       return data;
     },
@@ -52,7 +54,7 @@ function AddDoctors() {
             image: imgdata.data.display_url,
           };
           console.log(doctor);
-          fetch('http://localhost:5000/doctors', {
+          fetch('https://doctors-portal-server-nu-one.vercel.app/doctors', {
             method: 'POST',
             headers: {
               'content-type': 'application/json',

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 function BookingModal({ selected, treatment, setTreatment, refetch }) {
   // ! treatment is just another name of appoinment options!
-  const { _id, name, slots } = treatment;
+  const { _id, name, price, slots } = treatment;
   const date = format(selected, 'PPP');
 
   // use context
@@ -27,19 +27,23 @@ function BookingModal({ selected, treatment, setTreatment, refetch }) {
       appointment_date: date,
       treatment: name,
       slot,
+      price,
       patient,
       number,
       email,
     };
     // console.log(booking);
 
-    fetch('http://localhost:5000/bookingappointment', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(booking),
-    })
+    fetch(
+      'https://doctors-portal-server-nu-one.vercel.app/bookingappointment',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(booking),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.acknowledged) {

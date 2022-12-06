@@ -6,15 +6,32 @@ function AllUsers() {
   const { data: users = [], refetch } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:5000/users');
+      const res = await fetch(
+        'https://doctors-portal-server-nu-one.vercel.app/users'
+      );
       const data = await res.json();
       return data;
     },
   });
 
   const makeAdmin = (id) => {
-    fetch(`http://localhost:5000/users/admin/${id}`, {
+    fetch(`https://doctors-portal-server-nu-one.vercel.app/users/admin/${id}`, {
       method: 'PUT',
+      headers: {
+        authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          toast.success('Update successfull...');
+          refetch();
+        }
+      });
+  };
+  const Handledelete = (id) => {
+    fetch(`https://doctors-portal-server-nu-one.vercel.app/users/${id}`, {
+      method: 'DELETE',
       headers: {
         authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -71,7 +88,10 @@ function AllUsers() {
                     )}
                   </td>
                   <td className="p-3 cursor-pointer">
-                    <span className="px-3 py-1 font-semibold rounded-md bg-red-600 text-gray-50">
+                    <span
+                      onClick={() => Handledelete(_id)}
+                      className="px-3 py-1 font-semibold rounded-md bg-red-600 text-gray-50"
+                    >
                       <span>Delete</span>
                     </span>
                   </td>

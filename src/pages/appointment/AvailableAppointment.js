@@ -17,21 +17,21 @@ function AvailableAppointment({ selected }) {
   } = useQuery({
     queryKey: ['appointmentoptions', date],
     queryFn: () =>
-      fetch(`http://localhost:5000/appointmentoptions?date=${date}`).then(
-        (res) => res.json()
-      ),
+      fetch(
+        `https://doctors-portal-server-nu-one.vercel.app/appointmentoptions?date=${date}`
+      ).then((res) => res.json()),
   });
 
   // const { data: appointmentoptions = [] } = useQuery({
   //   queryKey: ['appointmentoptions'],
   // queryFn: async () => {
-  //   const res = await fetch('http://localhost:5000/appointmentoptions');
+  //   const res = await fetch('https://doctors-portal-server-nu-one.vercel.app/appointmentoptions');
   //   const data = await res.json();
   //   return data;
   // },
   // });
   // useEffect(() => {
-  // fetch('http://localhost:5000/appointmentoptions')
+  // fetch('https://doctors-portal-server-nu-one.vercel.app/appointmentoptions')
   //   .then((res) => res.json())
   //     .then((data) => setAppointmentoptions(data))
   //     .catch((error) => console.error(error.message));
@@ -52,7 +52,8 @@ function AvailableAppointment({ selected }) {
         </div>
         <div className="grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {appointmentoptions.map((appointmentoption) => {
-            const { _id, name, slots } = appointmentoption;
+            console.log(appointmentoption);
+            const { _id, name, price, slots } = appointmentoption;
             return (
               //   <div
               //     key={_id}
@@ -62,13 +63,15 @@ function AvailableAppointment({ selected }) {
                 <h3 className="font-semibold italic text-2xl group-hover:underline group-focus:underline text-secondary">
                   {name}
                 </h3>
-
                 <p className="font-medium italic text-sm text-muted">
                   {slots.length > 0 ? slots[0] : 'Try another day!'}{' '}
                 </p>
                 <p className="font-medium italic text-sm text-muted">
                   {slots.length} {slots.length > 1 ? 'SPACES' : 'SPACE'}{' '}
                   Available
+                </p>
+                <p className="font-semibold italic text-base group-hover:underline group-focus:underline text-primary">
+                  Price ${price}
                 </p>
                 <label
                   onClick={() => setTreatment(appointmentoption)}

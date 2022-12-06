@@ -30,18 +30,12 @@ function Navigation() {
               <Link rel="noopener noreferrer" to="/appointment">
                 Appointment
               </Link>
-              <Link rel="noopener noreferrer" to="/reviews">
-                Reviews
-              </Link>
               {user?.uid && (
                 <Link rel="noopener noreferrer" to="/dashboard">
                   Dashboard
                 </Link>
               )}
-              <Link rel="noopener noreferrer" to="/about">
-                About
-              </Link>
-              <Link rel="noopener noreferrer" to="/contacts">
+              <Link rel="noopener noreferrer" to="/contact">
                 Contacts
               </Link>
             </div>

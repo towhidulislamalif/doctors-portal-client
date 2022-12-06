@@ -13,6 +13,8 @@ import AllUsers from '../pages/dashboard/AllUsers';
 import AdminRoutes from '../pages/protected/AdminRoutes';
 import AddDoctors from '../pages/dashboard/AddDoctors';
 import ManageDoctors from '../pages/dashboard/ManageDoctors';
+import Payment from '../pages/dashboard/Payment';
+import Contact from '../pages/shared/Contact';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/appointment',
         element: <Appointment />,
+      },
+      {
+        path: '/contact',
+        element: <Contact />,
       },
       {
         path: '/signup',
@@ -78,6 +84,14 @@ const router = createBrowserRouter([
             <ManageDoctors />
           </AdminRoutes>
         ),
+      },
+      {
+        path: '/dashboard/payment/:id',
+        element: <Payment />,
+        loader: ({ params }) =>
+          fetch(
+            `https://doctors-portal-server-nu-one.vercel.app/bookingappointment/${params.id}`
+          ),
       },
     ],
   },

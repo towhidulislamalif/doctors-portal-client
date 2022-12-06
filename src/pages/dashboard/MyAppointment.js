@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 
 function MyAppointment() {
@@ -11,7 +12,7 @@ function MyAppointment() {
     queryKey: ['bookingappointment', user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/bookingappointment?email=${user?.email}`,
+        `https://doctors-portal-server-nu-one.vercel.app/bookingappointment?email=${user?.email}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem('token')}`,
@@ -46,12 +47,14 @@ function MyAppointment() {
               <th className="p-3">Treatment</th>
               <th className="p-3">Appointment_date</th>
               <th className="p-3">Slot</th>
+              <th className="p-3">Payment</th>
             </tr>
           </thead>
           <tbody>
             {bookings.map((booking, index) => {
-              const { _id, appointment_date, treatment, slot, patient } =
+              const { _id, appointment_date, treatment, slot, price, patient } =
                 booking;
+
               return (
                 <tr
                   key={_id}
@@ -62,6 +65,20 @@ function MyAppointment() {
                   <td className="p-3">{treatment}</td>
                   <td className="p-3">{appointment_date}</td>
                   <td className="p-3">{slot}</td>
+                  <td className="p-3">
+                    {price && !booking.paid && (
+                      <Link to={`/dashboard/payment/${_id}`}>
+                        <button className="cursor-pointer px-3 py-1 font-semibold rounded-md bg-cyan-600 text-gray-50">
+                          Pay
+                        </button>
+                      </Link>
+                    )}
+                    {price && booking.paid && (
+                      <span className="font-medium italic text-base bg-green-600 text-gray-50">
+                        Paid
+                      </span>
+                    )}
+                  </td>
                 </tr>
               );
             })}

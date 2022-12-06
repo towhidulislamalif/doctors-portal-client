@@ -19,11 +19,14 @@ function ManageDoctors() {
     queryKey: ['doctors'],
     queryFn: async () => {
       try {
-        const res = await fetch('http://localhost:5000/doctors', {
-          headers: {
-            authorization: `bearer ${localStorage.getItem('token')}`,
-          },
-        });
+        const res = await fetch(
+          'https://doctors-portal-server-nu-one.vercel.app/doctors',
+          {
+            headers: {
+              authorization: `bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
         const data = await res.json();
         return data;
       } catch (error) {}
@@ -32,12 +35,15 @@ function ManageDoctors() {
 
   //   action delete
   const action = (doctor) => {
-    fetch(`http://localhost:5000/doctors/${doctor._id}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: `bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    fetch(
+      `https://doctors-portal-server-nu-one.vercel.app/doctors/${doctor._id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          authorization: `bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount) {
